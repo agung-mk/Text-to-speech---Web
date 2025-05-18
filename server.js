@@ -21,16 +21,16 @@ function generateAudioCode(url) {
 // Proxy endpoint to serve the actual audio files
 app.get('/audio/:code', async (req, res) => {
     const { code } = req.params;
-    
+
     if (!audioCache.has(code)) {
-        return res.status(404).json({ 
+        return res.status(404).json({
             success: false,
-            error: 'Audio file not found' 
+            error: 'Audio file not found'
         });
     }
 
     const audioUrl = audioCache.get(code);
-    
+
     try {
         const response = await axios.get(audioUrl, {
             responseType: 'stream',
@@ -38,15 +38,15 @@ app.get('/audio/:code', async (req, res) => {
                 'User-Agent': 'Mozilla/5.0'
             }
         });
-        
+
         // Set appropriate content type
         res.set('Content-Type', response.headers['content-type'] || 'audio/mpeg');
         response.data.pipe(res);
     } catch (error) {
         console.error('Proxy audio error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
-            error: 'Error fetching audio file' 
+            error: 'Error fetching audio file'
         });
     }
 });
@@ -57,16 +57,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set view engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
 // Tmpfile uploader
 const uploadToTmpfile = async (buffer) => {
   try {
     const form = new FormData();
     form.append('file', buffer, 'voicegen.mp3'); // Hardcode as MP3 since we know the response will be audio
-    
+
     const response = await axios.post("https://tmpfiles.org/api/v1/upload", form, {
       headers: {
         ...form.getHeaders(),
@@ -135,7 +135,7 @@ app.post('/api/generate-tts', async (req, res) => {
     // Generate local URL
     const code = generateAudioCode(uploadResult.url);
     audioCache.set(code, uploadResult.url);
-    
+
     const host = req.get('host');
     const protocol = req.protocol;
     const localUrl = `${protocol}://${host}/audio/${code}`;
