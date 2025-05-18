@@ -85,9 +85,12 @@
                         <div>
                             <label class="block text-gray-300 mb-2">Voice Style</label>
                             <select id="voice-select" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <% voices.forEach(voice => { %>
-                                    <option value="<%= voice %>" <%= voice === 'Coral' ? 'selected' : '' %>><%= voice %></option>
-                                <% }); %>
+                                <option value="Coral" selected>Coral</option>
+                                <option value="Breeze">Breeze</option>
+                                <option value="Echo">Echo</option>
+                                <option value="Nova">Nova</option>
+                                <option value="Orbit">Orbit</option>
+                                <option value="Pulse">Pulse</option>
                             </select>
                         </div>
 
@@ -96,9 +99,11 @@
                             <label class="block text-gray-300 mb-2">Vibe (Optional)</label>
                             <select id="vibe-select" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                 <option value="">None</option>
-                                <% vibes.forEach(vibe => { %>
-                                    <option value="<%= vibe %>"><%= vibe %></option>
-                                <% }); %>
+                                <option value="Friendly">Friendly</option>
+                                <option value="Professional">Professional</option>
+                                <option value="Excited">Excited</option>
+                                <option value="Calm">Calm</option>
+                                <option value="Authoritative">Authoritative</option>
                             </select>
                         </div>
                     </div>
@@ -111,12 +116,18 @@
                         </button>
 
                         <div id="advanced-settings" class="mt-4 space-y-4 hidden">
-                            <% Object.keys(defaultPrompt).forEach(key => { %>
-                                <div>
-                                    <label class="block text-gray-300 mb-2 capitalize"><%= key %></label>
-                                    <input type="text" id="prompt-<%= key %>" value="<%= defaultPrompt[key] %>" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                </div>
-                            <% }); %>
+                            <div>
+                                <label class="block text-gray-300 mb-2 capitalize">speed</label>
+                                <input type="text" id="prompt-speed" value="1.0" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2 capitalize">pitch</label>
+                                <input type="text" id="prompt-pitch" value="0" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2 capitalize">emphasis</label>
+                                <input type="text" id="prompt-emphasis" value="moderate" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
                         </div>
                     </div>
                 </div>
